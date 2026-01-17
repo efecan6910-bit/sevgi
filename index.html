@@ -4,86 +4,73 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>❤️ Kalp Yağmuru</title>
+
 <style>
-body {
-  margin: 0;
-  background: pink;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-  position: relative;
+body{
+  margin:0;
+  background:pink;
+  overflow:hidden;
+  font-family:Arial, sans-serif;
 }
 
-/* Başlangıç ekranı */
-#startScreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(255,192,203,0.95);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  cursor: pointer;
+/* BAŞLANGIÇ */
+#start{
+  position:fixed;
+  inset:0;
+  background:rgba(255,192,203,.95);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
 }
 
-#startScreen span {
-  font-size: 50px;
-  font-weight: bold;
-  color: red;
-  background: white;
-  padding: 20px 40px;
-  border-radius: 20px;
-  text-align: center;
+#start div{
+  background:white;
+  color:red;
+  font-size:40px;
+  padding:20px 40px;
+  border-radius:20px;
 }
 
-/* Düşen kalpler */
-.heart {
-  position: fixed;
-  top: -60px;
-  font-size: 50px;
-  color: red;
-  animation: fall linear forwards;
-  cursor: pointer;
-  user-select: none;
+/* KALP */
+.heart{
+  position:fixed;
+  top:-60px;
+  font-size:48px;
+  animation:fall linear forwards;
 }
 
-/* Ortada çıkan mesajlar */
-#messageDisplay {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 30px;
-  background: white;
-  padding: 15px 25px;
-  border-radius: 15px;
-  display: none;
-  z-index: 2000;
-  text-align: center;
+/* MESAJ */
+#msg{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:white;
+  padding:15px 25px;
+  font-size:26px;
+  border-radius:15px;
+  display:none;
+  z-index:1000;
+  text-align:center;
 }
 
-@keyframes fall {
-  to {
-    transform: translateY(120vh);
-  }
+@keyframes fall{
+  to{ transform:translateY(130vh); }
 }
 </style>
 </head>
+
 <body>
 
-<!-- Başlangıç ekranı -->
-<div id="startScreen">
-  <span>BURAYA TIKLA</span>
+<div id="start">
+  <div>BURAYA TIKLA</div>
 </div>
 
-<!-- Ortada mesaj kutusu -->
-<div id="messageDisplay"></div>
+<div id="msg"></div>
 
 <script>
-// Mesajlar
-const sozler = [
+const sozler=[
   "Seni çok seviyorum AŞKIMM❤️",
   "İyi ki varsın KURBAN OLDUĞUM😘",
   "Kalbim senin BUSUSUMMM 💖",
@@ -101,46 +88,40 @@ const sozler = [
   "Sana her zaman aşık olacağım 💕"
 ];
 
-// Kalp üretme fonksiyonu
-function kalpYagdir() {
-  const kalp = document.createElement("div");
-  kalp.className = "heart";
-  kalp.style.left = Math.random() * 85 + "vw";
+let started=false;
 
-  kalp.innerHTML = "❤️";
+function kalpYagdir(){
+  const k=document.createElement("div");
+  k.className="heart";
+  k.textContent="❤️";
+  k.style.left=Math.random()*90+"vw";
+  k.style.animationDuration=(6+Math.random()*4)+"s";
 
-  function goster() {
-    const display = document.getElementById("messageDisplay");
-    const mesaj = sozler[Math.floor(Math.random() * sozler.length)];
-    display.innerText = mesaj;
-    display.style.display = "block";
+  function goster(){
+    const m=document.getElementById("msg");
+    m.textContent=sozler[Math.floor(Math.random()*sozler.length)];
+    m.style.display="block";
   }
 
-  // Hem bilgisayar hem mobil uyumlu
-  kalp.addEventListener("click", goster);
-  kalp.addEventListener("touchstart", function(e){
-    e.preventDefault(); // Dokunma çift tetiklenmesin
-    goster();
-  }, {passive: false});
+  k.addEventListener("touchstart",goster,{passive:true});
+  k.addEventListener("click",goster);
 
-  document.body.appendChild(kalp);
-
-  setTimeout(() => {
-    kalp.remove();
-  }, 12000);
+  document.body.appendChild(k);
+  setTimeout(()=>k.remove(),12000);
 }
 
-// Başlangıç ekranı tıklama/touch
-function startGame() {
-  document.getElementById("startScreen").remove();
-  setInterval(kalpYagdir, 500);
+function baslat(){
+  if(started) return;
+  started=true;
+
+  document.getElementById("start").remove();
+
+  kalpYagdir();                 // 👈 TELEFON İÇİN KRİTİK
+  setInterval(kalpYagdir,500);
 }
 
-document.getElementById("startScreen").addEventListener("click", startGame);
-document.getElementById("startScreen").addEventListener("touchstart", function(e){
-  e.preventDefault();
-  startGame();
-}, {passive: false});
+document.getElementById("start").addEventListener("touchstart",baslat,{passive:true});
+document.getElementById("start").addEventListener("click",baslat);
 </script>
 
 </body>
