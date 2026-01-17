@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Aşk Bombası 💖</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: pink;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+button {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 26px;
+    padding: 20px 40px;
+    border: none;
+    border-radius: 40px;
+    background: hotpink;
+    color: white;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.heart {
+    position: absolute;
+    font-size: 60px;
+    cursor: pointer;
+    animation: fall linear;
+}
+
+@keyframes fall {
+    from { transform: translateY(-80px); }
+    to { transform: translateY(100vh); }
+}
+
+.loveText {
+    position: absolute;
+    font-size: 24px;
+    background: hotpink;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    animation: fade 2.5s forwards;
+    z-index: 20;
+    pointer-events: none;
+}
+
+@keyframes fade {
+    from { opacity: 1; }
+    to { opacity: 0; transform: translateY(-40px); }
+}
+</style>
+</head>
+
+<body>
+
+<button onclick="startLove()">Buna basarsan bir şey olur 😍</button>
+
+<audio id="music" src="sarki.mp3"></audio>
+
+<script>
+const words = [
+    "Seni çok seviyorum DURUŞUMM 💖",
+    "İyi ki varsın AŞKIMMM 😍",
+    "Kalbim senin BALIMMM💕",
+    "Dünyam sensin 🌍",
+    "Gülüşüne aşığım KURBAN OLDUĞUM 😊",
+    "Sonsuza kadar biz 💞"
+];
+
+function startLove() {
+    document.querySelector("button").style.display = "none";
+
+    const music = document.getElementById("music");
+    music.volume = 0.7;
+    music.play();
+
+    setInterval(() => {
+        for (let i = 0; i < 4; i++) {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerHTML = "💖";
+            heart.style.left = Math.random() * 90 + "vw";
+            heart.style.animationDuration = (5 + Math.random() * 3) + "s";
+
+            heart.onclick = (e) => {
+                const txt = document.createElement("div");
+                txt.className = "loveText";
+                txt.innerHTML = words[Math.floor(Math.random() * words.length)];
+                txt.style.left = e.clientX + "px";
+                txt.style.top = e.clientY + "px";
+                document.body.appendChild(txt);
+                setTimeout(() => txt.remove(), 2500);
+            };
+
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 8000);
+        }
+    }, 400);
+}
+</script>
+
+</body>
+</html>
