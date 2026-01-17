@@ -2,109 +2,145 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Aşk Bombası 💖</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>❤️ Kalp Yağmuru</title>
 <style>
 body {
-    margin: 0;
-    height: 100vh;
-    background: pink;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
+  margin: 0;
+  background: pink;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  position: relative;
 }
 
-button {
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 26px;
-    padding: 20px 40px;
-    border: none;
-    border-radius: 40px;
-    background: hotpink;
-    color: white;
-    cursor: pointer;
-    z-index: 10;
+/* Başlangıç ekranı */
+#startScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255,192,203,0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
 }
 
+#startScreen span {
+  font-size: 50px;
+  font-weight: bold;
+  color: red;
+  background: white;
+  padding: 20px 40px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+/* Düşen kalpler */
 .heart {
-    position: absolute;
-    font-size: 60px;
-    cursor: pointer;
-    animation: fall linear;
+  position: fixed;
+  top: -60px;
+  font-size: 50px;
+  color: red;
+  animation: fall linear forwards;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Ortada çıkan mesajlar */
+#messageDisplay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  background: white;
+  padding: 15px 25px;
+  border-radius: 15px;
+  display: none;
+  z-index: 2000;
+  text-align: center;
 }
 
 @keyframes fall {
-    from { transform: translateY(-80px); }
-    to { transform: translateY(100vh); }
-}
-
-.loveText {
-    position: absolute;
-    font-size: 24px;
-    background: hotpink;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 30px;
-    animation: fade 2.5s forwards;
-    z-index: 20;
-    pointer-events: none;
-}
-
-@keyframes fade {
-    from { opacity: 1; }
-    to { opacity: 0; transform: translateY(-40px); }
+  to {
+    transform: translateY(120vh);
+  }
 }
 </style>
 </head>
-
 <body>
 
-<button onclick="startLove()">Buna basarsan bir şey olur 😍</button>
+<!-- Başlangıç ekranı -->
+<div id="startScreen">
+  <span>BURAYA TIKLA</span>
+</div>
 
-<audio id="music" src="sarki.mp3"></audio>
+<!-- Ortada mesaj kutusu -->
+<div id="messageDisplay"></div>
 
 <script>
-const words = [
-    "Seni çok seviyorum DURUŞUMM 💖",
-    "İyi ki varsın AŞKIMMM 😍",
-    "Kalbim senin BALIMMM💕",
-    "Dünyam sensin 🌍",
-    "Gülüşüne aşığım KURBAN OLDUĞUM 😊",
-    "Sonsuza kadar biz 💞"
+// Mesajlar
+const sozler = [
+  "Seni çok seviyorum AŞKIMM❤️",
+  "İyi ki varsın KURBAN OLDUĞUM😘",
+  "Kalbim senin BUSUSUMMM 💖",
+  "Hep benim ol BALIMMMM 💕",
+  "Gülüşün dünyam 🌍",
+  "Seninle her şey daha güzel 🌸",
+  "Sen benim ışığımsın ✨",
+  "Aşkımız sonsuz KURBAN OLDUĞUM💞",
+  "Kalbim hep seninle 💓",
+  "Sen benim mutluluğumsun 🥰",
+  "Sensiz bir gün düşünemem 💘",
+  "Gözlerin büyülüyor 🌟",
+  "Seninle her an özel 💖",
+  "Sen benim hayatımın anlamısın ❤️",
+  "Sana her zaman aşık olacağım 💕"
 ];
 
-function startLove() {
-    document.querySelector("button").style.display = "none";
+// Kalp üretme fonksiyonu
+function kalpYagdir() {
+  const kalp = document.createElement("div");
+  kalp.className = "heart";
+  kalp.style.left = Math.random() * 85 + "vw";
 
-    const music = document.getElementById("music");
-    music.volume = 0.7;
-    music.play();
+  kalp.innerHTML = "❤️";
 
-    setInterval(() => {
-        for (let i = 0; i < 4; i++) {
-            const heart = document.createElement("div");
-            heart.className = "heart";
-            heart.innerHTML = "💖";
-            heart.style.left = Math.random() * 90 + "vw";
-            heart.style.animationDuration = (5 + Math.random() * 3) + "s";
+  function goster() {
+    const display = document.getElementById("messageDisplay");
+    const mesaj = sozler[Math.floor(Math.random() * sozler.length)];
+    display.innerText = mesaj;
+    display.style.display = "block";
+  }
 
-            heart.onclick = (e) => {
-                const txt = document.createElement("div");
-                txt.className = "loveText";
-                txt.innerHTML = words[Math.floor(Math.random() * words.length)];
-                txt.style.left = e.clientX + "px";
-                txt.style.top = e.clientY + "px";
-                document.body.appendChild(txt);
-                setTimeout(() => txt.remove(), 2500);
-            };
+  // Hem bilgisayar hem mobil uyumlu
+  kalp.addEventListener("click", goster);
+  kalp.addEventListener("touchstart", function(e){
+    e.preventDefault(); // Dokunma çift tetiklenmesin
+    goster();
+  }, {passive: false});
 
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 8000);
-        }
-    }, 400);
+  document.body.appendChild(kalp);
+
+  setTimeout(() => {
+    kalp.remove();
+  }, 12000);
 }
+
+// Başlangıç ekranı tıklama/touch
+function startGame() {
+  document.getElementById("startScreen").remove();
+  setInterval(kalpYagdir, 500);
+}
+
+document.getElementById("startScreen").addEventListener("click", startGame);
+document.getElementById("startScreen").addEventListener("touchstart", function(e){
+  e.preventDefault();
+  startGame();
+}, {passive: false});
 </script>
 
 </body>
